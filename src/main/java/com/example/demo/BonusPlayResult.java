@@ -4,7 +4,7 @@ import lombok.ToString;
 
 @ToString
 public class BonusPlayResult {
-    String bonus;
-    String noBonus;
-    String replay;
+    public String bonus;
+    public String noBonus;
+    public String replay;
 }

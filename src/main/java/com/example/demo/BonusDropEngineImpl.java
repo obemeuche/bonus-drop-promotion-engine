@@ -27,31 +27,28 @@ public class BonusDropEngineImpl implements BonusDropEngine {
     private BonusPlayResult determineBonus(List<Integer> prob, int randomNumber, String choice) {
         BonusPlayResult result = new BonusPlayResult();
 
+        Collections.sort(prob);
+
         int min = prob.get(0);      // Upper limit for "Bonus"
         int mid = prob.get(1);    // Upper limit for "No Bonus"
         int max = prob.get(2);     // Upper limit for "Replay"
 
-        Collections.sort(prob);
         // Adjust logic based on how the probability ranges work
-        if (randomNumber <= max) {
-            if (choice.equals("left")) {
-                result.replay = "No Bonus";
-                return result;
-            }
+        if (randomNumber <= min) {
             result.replay = "Replay";
             return result;
         }
         if (randomNumber <= mid) {
-            if (choice.equals("left")) {
-                result.replay = "Bonus";
+            if (choice.equalsIgnoreCase("left")) {
+                result.bonus = "Bonus";
                 return result;
             }
             result.noBonus = "No Bonus";
             return result;
         }
-        if (randomNumber <= min) {
-            if (choice.equals("left")) {
-                result.replay = "Replay";
+        if (randomNumber <= max) {
+            if (choice.equalsIgnoreCase("left")) {
+                result.noBonus = "No Bonus";
                 return result;
             }
             result.bonus = "Bonus";
