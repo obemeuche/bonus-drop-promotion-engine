@@ -1,8 +1,4 @@
-package com.example.demo.service.serviceImpl;
-
-import com.example.demo.dto.BonusPlayResult;
-import com.example.demo.dto.PlayerChoice;
-import com.example.demo.service.BonusDropEngine;
+package com.example.demo;
 
 import java.util.*;
 
@@ -63,11 +59,4 @@ public class BonusDropEngineImpl implements BonusDropEngine {
         return map;
     }
 
-    public static void main(String[] args) {
-        PlayerChoice choice = new PlayerChoice();
-        choice.middle = "Middle";
-
-        BonusDropEngine engine = new BonusDropEngineImpl();
-        System.out.println(engine.calculateBonus(choice));
-    }
 }
