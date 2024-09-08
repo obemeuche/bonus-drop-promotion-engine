@@ -14,33 +14,46 @@ public class BonusDropEngineImpl implements BonusDropEngine {
         System.out.println("Random number: " + randomNumber);
         // Check all possible choices in sequence: left, right, middle
         if (!choice.left.isEmpty()) {
-            return determineBonus(getProbability.get(choice.left), randomNumber);
+            return determineBonus(getProbability.get(choice.left), randomNumber, choice.left);
         } else if (!choice.right.isEmpty()) {
-            return determineBonus(getProbability.get(choice.right), randomNumber);
+            return determineBonus(getProbability.get(choice.right), randomNumber, choice.right);
         } else if (!choice.middle.isEmpty()) {
-            return determineBonus(getProbability.get(choice.middle), randomNumber);
+            return determineBonus(getProbability.get(choice.middle), randomNumber, choice.middle);
         }
 
         return null;
     }
 
-    private BonusPlayResult determineBonus(List<Integer> prob, int randomNumber) {
+    private BonusPlayResult determineBonus(List<Integer> prob, int randomNumber, String choice) {
         BonusPlayResult result = new BonusPlayResult();
 
-        int bonusLimit = prob.get(0);      // Upper limit for "Bonus"
-        int noBonusLimit = prob.get(1);    // Upper limit for "No Bonus"
-        int replayLimit = prob.get(2);     // Upper limit for "Replay"
+        int min = prob.get(0);      // Upper limit for "Bonus"
+        int mid = prob.get(1);    // Upper limit for "No Bonus"
+        int max = prob.get(2);     // Upper limit for "Replay"
 
+        Collections.sort(prob);
         // Adjust logic based on how the probability ranges work
-        if (randomNumber <= replayLimit) {
+        if (randomNumber <= max) {
+            if (choice.equals("left")) {
+                result.replay = "No Bonus";
+                return result;
+            }
             result.replay = "Replay";
             return result;
         }
-        if (randomNumber <= noBonusLimit) {
+        if (randomNumber <= mid) {
+            if (choice.equals("left")) {
+                result.replay = "Bonus";
+                return result;
+            }
             result.noBonus = "No Bonus";
             return result;
         }
-        if (randomNumber <= bonusLimit) {
+        if (randomNumber <= min) {
+            if (choice.equals("left")) {
+                result.replay = "Replay";
+                return result;
+            }
             result.bonus = "Bonus";
             return result;
         }
