@@ -12,50 +12,40 @@ public class BonusDropEngineImpl implements BonusDropEngine {
         int randomNumber = random.nextInt(100) + 1;
         System.out.println(getProbability);
         System.out.println("Random number: " + randomNumber);
+
         // Check all possible choices in sequence: left, right, middle
-        if (!choice.left.isEmpty()) {
-            return determineBonus(getProbability.get(choice.left), randomNumber, choice.left);
-        } else if (!choice.right.isEmpty()) {
-            return determineBonus(getProbability.get(choice.right), randomNumber, choice.right);
-        } else if (!choice.middle.isEmpty()) {
-            return determineBonus(getProbability.get(choice.middle), randomNumber, choice.middle);
+        if (choice.left != null) {
+            return determineBonus(getProbability.get(choice.left), randomNumber);
+        } else if (choice.right != null) {
+            return determineBonus(getProbability.get(choice.right), randomNumber);
+        } else if (choice.middle != null) {
+            return determineBonus(getProbability.get(choice.middle), randomNumber);
         }
 
         return null;
     }
 
-    private BonusPlayResult determineBonus(List<Integer> prob, int randomNumber, String choice) {
+    private BonusPlayResult determineBonus(List<Integer> prob, int randomNumber) {
         BonusPlayResult result = new BonusPlayResult();
+        System.out.println("list of probabilities: " + prob);
 
-        Collections.sort(prob);
-
-        int min = prob.get(0);      // Upper limit for "Bonus"
-        int mid = prob.get(1);    // Upper limit for "No Bonus"
-        int max = prob.get(2);     // Upper limit for "Replay"
+        //int bonusLimit = prob.get(0);      // limit for "Bonus"
+        int noBonusLimit = prob.get(1);    // limit for "No Bonus"
+        int replayLimit = prob.get(2);     // limit for "Replay"
 
         // Adjust logic based on how the probability ranges work
-        if (randomNumber <= min) {
+        if (randomNumber <= replayLimit) {
             result.replay = "Replay";
             return result;
         }
-        if (randomNumber <= mid) {
-            if (choice.equalsIgnoreCase("left")) {
-                result.bonus = "Bonus";
-                return result;
-            }
+        if (randomNumber <= noBonusLimit) {
             result.noBonus = "No Bonus";
             return result;
         }
-        if (randomNumber <= max) {
-            if (choice.equalsIgnoreCase("left")) {
-                result.noBonus = "No Bonus";
-                return result;
-            }
-            result.bonus = "Bonus";
-            return result;
-        }
 
+        result.bonus = "Bonus";
         return result;
+
     }
 
     public Map<String, List<Integer>> populateBonusProbability() {
@@ -71,7 +61,7 @@ public class BonusDropEngineImpl implements BonusDropEngine {
 
     public static void main(String[] args) {
         PlayerChoice choice = new PlayerChoice();
-        choice.left = "Left";
+        choice.middle = "Middle";
 
         BonusDropEngine engine = new BonusDropEngineImpl();
         System.out.println(engine.calculateBonus(choice));
