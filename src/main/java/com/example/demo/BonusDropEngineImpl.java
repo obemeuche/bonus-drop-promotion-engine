@@ -11,7 +11,7 @@ public class BonusDropEngineImpl implements BonusDropEngine {
         Random random = new Random();
         int randomNumber = random.nextInt(100) + 1;
         System.out.println("bonus probability: " + getProbability);
-        System.out.println("Random number: " + randomNumber);
+        System.out.println("random number: " + randomNumber);
 
         // Check all possible choices in sequence: left, right, middle
         if (choice.left != null) {
